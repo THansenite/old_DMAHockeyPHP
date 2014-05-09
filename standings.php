@@ -53,7 +53,7 @@
 			<tbody>
 			<?php
 			// Include common db setup code
-			include ("common/db_setup.php");
+			include ("../setup/db_setup.php");
 
 			// Pull all users from the database
 			$connection = mysqli_connect($server, $username, $password, $database) or die ("Connection failed");

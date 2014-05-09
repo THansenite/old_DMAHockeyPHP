@@ -69,9 +69,32 @@ th {
 	<td>
 		<select name="statkeeper">
 		<option>Select statkeeper</option>
+
+		<!-- TODO: Add option for no statkeeper -->
 		<option value="0">- No statkeeper -</option>
-		<option value="3">Dawn Gorelik</option>
-		<option value="4">Valerie Natale</option>
+		<?php
+		include ("../setup/db_setup.php");
+
+		// Pull statkeepers from the database
+		$connection = mysqli_connect($server, $username, $password, $database) or die ("Connection failed");
+
+		$query = "SELECT s.id, concat(p.first, ' ', p.last) as 'name' FROM staff as s JOIN person as p ON s.person = p.id WHERE s.active = 1 ORDER BY p.last, p.first";
+		$result = mysqli_query($connection, $query) or die("Query failed");
+
+		while ($row = mysqli_fetch_assoc($result)) {
+			$id = $row['id'];
+			$name = $row['name'];
+
+			echo "<option value=\"";
+			echo htmlentities($id);
+			echo "\">";
+			echo htmlentities($name);
+			echo "</option>";
+		}
+		mysqli_free_result($result);
+		mysqli_close($connection);
+		?>
+		
 		</select>
 	</td>
 	<td><input type="text" name="startTime"></td>
