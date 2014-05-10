@@ -54,16 +54,55 @@ th {
 		<select name="referee1">
 		<option>Select referee</option>
 		<option value="0">- No referee -</option>
-		<option value="1">Justin Sturtz</option>
-		<option value="2">Derek Something</option>
+		<?php
+		include ("../../setup/db_setup.php");
+
+		// Pull statkeepers from the database
+		$connection = mysqli_connect($server, $username, $password, $database) or die ("Connection failed");
+
+		$query = "SELECT s.id, concat(p.first, ' ', p.last) as 'name' FROM staff as s JOIN person as p ON s.person = p.id WHERE s.active = 1 AND s.job = 1 ORDER BY p.last, p.first";
+		$result = mysqli_query($connection, $query) or die("Query failed");
+
+		while ($row = mysqli_fetch_assoc($result)) {
+			$id = $row['id'];
+			$name = $row['name'];
+
+			echo "<option value=\"";
+			echo htmlentities($id);
+			echo "\">";
+			echo htmlentities($name);
+			echo "</option>";
+		}
+		mysqli_free_result($result);
+		mysqli_close($connection);
+		?>
 		</select>
 	</td>
 	<td>
 		<select name="referee2">
 		<option>Select referee</option>
-		<option value="0">- No referee -</option>
-		<option value="1">Justin Sturtz</option>
-		<option value="2">Derek Something</option>
+		<option value="0">- No referee -</option><?php
+		include ("../../setup/db_setup.php");
+
+		// Pull statkeepers from the database
+		$connection = mysqli_connect($server, $username, $password, $database) or die ("Connection failed");
+
+		$query = "SELECT s.id, concat(p.first, ' ', p.last) as 'name' FROM staff as s JOIN person as p ON s.person = p.id WHERE s.active = 1 AND s.job = 1 ORDER BY p.last, p.first";
+		$result = mysqli_query($connection, $query) or die("Query failed");
+
+		while ($row = mysqli_fetch_assoc($result)) {
+			$id = $row['id'];
+			$name = $row['name'];
+
+			echo "<option value=\"";
+			echo htmlentities($id);
+			echo "\">";
+			echo htmlentities($name);
+			echo "</option>";
+		}
+		mysqli_free_result($result);
+		mysqli_close($connection);
+		?>
 		</select>
 	</td>
 	<td>
@@ -78,7 +117,7 @@ th {
 		// Pull statkeepers from the database
 		$connection = mysqli_connect($server, $username, $password, $database) or die ("Connection failed");
 
-		$query = "SELECT s.id, concat(p.first, ' ', p.last) as 'name' FROM staff as s JOIN person as p ON s.person = p.id WHERE s.active = 1 ORDER BY p.last, p.first";
+		$query = "SELECT s.id, concat(p.first, ' ', p.last) as 'name' FROM staff as s JOIN person as p ON s.person = p.id WHERE s.active = 1 AND s.job = 2 ORDER BY p.last, p.first";
 		$result = mysqli_query($connection, $query) or die("Query failed");
 
 		while ($row = mysqli_fetch_assoc($result)) {
