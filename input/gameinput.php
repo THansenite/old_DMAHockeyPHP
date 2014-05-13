@@ -1,22 +1,6 @@
 <html>
 <head>
-<style>
-table {
-	width: 700px;
-	border: 2px solid black;
-	border-collapse: collapse;
-}
-
-td, th {
-	border: 1px solid black;
-	padding: 4px;
-}
-
-th {
-	border-bottom: 2px solid black;
-}
-
-</style>
+	<link href="inputstyle.css" rel="stylesheet">
 
 </head>
 <body>
@@ -43,7 +27,23 @@ while ($row = mysqli_fetch_assoc($result)) {
 	$home = $row['home'];
 	$away = $row['away'];
 
-	echo "<tr>";
+	//mysqli_free_result($result);
+	mysqli_close($connection);
+	}
+	?>
+
+<tr>
+  <td><strong>Game ID:</strong> <?php echo "$id"; ?></td>
+  <td><strong>Date:</strong> <?php echo "$date"; ?></td>
+  <td><strong>Time:</strong> <?php echo "$time"; ?></td>
+</tr>
+<tr>
+  <td><strong>Home Team:</strong> <?php echo "$home"; ?></td>
+  <td></td>
+  <td><strong>Away Team:</strong> <?php echo "$away"; ?></td>
+</tr>
+
+<!-- 	echo "<tr>";
 	echo "	<td><strong>Game ID:</strong> $id</td>";
 	echo "  <td><strong>Date:</strong> $date</td>";
 	echo "  <td><strong>Time:</strong> $time</td>";
@@ -54,12 +54,84 @@ while ($row = mysqli_fetch_assoc($result)) {
 	echo "  <td><strong>Away Team:</strong> $away</td>";
 	echo "</tr>";
 	}
-	mysqli_free_result($result);
-	mysqli_close($connection);
-	?>
+	?> -->
+
 
 </table>
 
+<br />
+
+<table id="game_table">
+<tr>
+	<th colspan="4">Game Data</th>
+</tr>
+<tr>
+	<td><strong>Referee 1</strong></td>
+	<td><strong>Referee 2</strong></td>
+	<td><strong>Statkeeper</strong></td>
+	<td><strong>Start Time</strong></td>
+</tr>
+<tr>
+	<td><strong><?php echo "$home"; ?> Score:</strong></td>
+	<td><input type="text" name="homescore" maxlength="2" size="2"></td>
+	<td><strong><?php echo "$away"; ?> Score:</strong></td>
+	<td><input type="text" name="awayscore" maxlength="2" size="2"></td>
+</tr>
+<tr>
+	<td colspan="2"><input type="checkbox" name="shootout" value="homeSOL"> <?php echo "$home"; ?> Lost in Shootout</td>
+	<td colspan="2"><input type="checkbox" name="shootout" value="awaySOL"> <?php echo "$away"; ?> Lost in Shootout</td>
+</tr>
+<tr>
+	<td colspan="2"><input type="checkbox" name="forfeit" value="homeforfeit"> <?php echo "$home"; ?> Forfeited Game</td>
+	<td colspan="2"><input type="checkbox" name="forfeit" value="awayforfeit"> <?php echo "$away"; ?> Forfeited Game</td>
+</tr>
+<tr colspan=4>
+	<td>Game Notes:</td>
+	<td colspan="3"><textarea name="gamenotes" cols="50" rows="5"></textarea></td>
+</tr>
+</table>
+
+<br />
+
+<table id="goalie_table">
+<tr>
+	<th colspan="4">Goalie Data</th>
+</tr>
+<tr>
+	<td colspan="2"><strong><?php echo "$home"; ?> Goalie</strong></td>
+	<td colspan="2"><strong><?php echo "$away"; ?> Goalie</strong></td>
+</tr>
+<tr>
+	<td colspan="2">
+		<select name="homegoalie">
+		<option>Select goalie</option>
+		<option>- No goalie -</option>
+		<option>Tony Hansen</option>
+		<option>Scott Anderson</option>
+		<option>Rich Pentico</option>
+		</select>
+	</td>
+	<td colspan="2">
+		<select name="awaygoalie">
+		<option>Select goalie</option>
+		<option>- No goalie -</option>
+		<option>Tony Hansen</option>
+		<option>Scott Anderson</option>
+		<option>Rich Pentico</option>
+		</select>
+	</td>
+</tr>
+<tr>
+	<td><strong>Goals Scored on <em>GoalieName</em>:</strong></td>
+	<td><input type="text" name="homeGA" maxlength="2" size="2"></td>
+	<td><strong>Goals Scored on <em>GoalieName</em>:</strong></td>
+	<td><input type="text" name="awayGA" maxlength="2" size="2"></td>
+</tr>
+<tr>
+	<td colspan="2"><input type="checkbox" name="fullGame" value="homeGoalie" checked="true"> <em>GoalieName</em> played full game?</td>
+	<td colspan="2"><input type="checkbox" name="fullGame" value="homeGoalie" checked="true"> <em>GoalieName</em> played full game?</td>
+</tr>
+</table>
 
 </body>
 </html>

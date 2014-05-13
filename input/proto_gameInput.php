@@ -1,22 +1,6 @@
 <html>
 <head>
-<style>
-table {
-	width: 700px;
-	border: 2px solid black;
-	border-collapse: collapse;
-}
-
-td, th {
-	border: 1px solid black;
-	padding: 4px;
-}
-
-th {
-	border-bottom: 2px solid black;
-}
-
-</style>
+	<link href="inputstyle.css" rel="stylesheet"
 
 </head>
 <body>
