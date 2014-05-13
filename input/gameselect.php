@@ -23,6 +23,7 @@ th {
 
 <h2>Edit Games</h2>
 
+
 <table id="select_game">
 <thead>
 <tr>
@@ -58,8 +59,9 @@ while ($row = mysqli_fetch_assoc($result)) {
 	echo "</td><td>";
 	echo htmlentities($away);
 	echo "</td><td>";
-	echo "<a href = \"#\">Edit game ";
+	echo "<a href = \"gameinput.php?gameid=";
 	echo htmlentities($id);
+	echo "\">Edit game ";
 	echo "</a></td></tr>";
 }
 mysqli_free_result($result);
