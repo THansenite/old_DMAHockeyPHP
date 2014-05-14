@@ -6,6 +6,7 @@
 <body>
 <h2>Game Input</h2>
 
+<form action="gameinput_process.php" method="post">
 <table id="schedule_table">
 <tr>
 	<th colspan="3">Scheduled Game Info</th>
@@ -42,21 +43,6 @@ while ($row = mysqli_fetch_assoc($result)) {
   <td></td>
   <td><strong>Away Team:</strong> <?php echo "$away"; ?></td>
 </tr>
-
-<!-- 	echo "<tr>";
-	echo "	<td><strong>Game ID:</strong> $id</td>";
-	echo "  <td><strong>Date:</strong> $date</td>";
-	echo "  <td><strong>Time:</strong> $time</td>";
-	echo "</tr>";
-	echo "<tr>";
-	echo "  <td><strong>Home Team:</strong> $home</td>";
-	echo "  <td></td>";
-	echo "  <td><strong>Away Team:</strong> $away</td>";
-	echo "</tr>";
-	}
-	?> -->
-
-
 </table>
 
 <br />
@@ -72,18 +58,109 @@ while ($row = mysqli_fetch_assoc($result)) {
 	<td><strong>Start Time</strong></td>
 </tr>
 <tr>
+	<td>
+		<select name="referee1">
+		<option>Select referee</option>
+		<option value="0">- No referee -</option>
+		<?php
+		include ("../../setup/db_setup.php");
+
+		// Pull statkeepers from the database
+		$connection = mysqli_connect($server, $username, $password, $database) or die ("Connection failed");
+
+		$query = "SELECT s.id, concat(p.first, ' ', p.last) as 'name' FROM staff as s JOIN person as p ON s.person = p.id WHERE s.active = 1 AND s.job = 1 ORDER BY p.last, p.first";
+		$result = mysqli_query($connection, $query) or die("Query failed");
+
+		while ($row = mysqli_fetch_assoc($result)) {
+			$id = $row['id'];
+			$name = $row['name'];
+
+			echo "<option value=\"";
+			echo htmlentities($id);
+			echo "\">";
+			echo htmlentities($name);
+			echo "</option>";
+		}
+		mysqli_free_result($result);
+		mysqli_close($connection);
+		?>
+		</select>
+	</td>
+	<td>
+		<select name="referee2">
+		<option>Select referee</option>
+		<option value="0">- No referee -</option><?php
+		include ("../../setup/db_setup.php");
+
+		// Pull statkeepers from the database
+		$connection = mysqli_connect($server, $username, $password, $database) or die ("Connection failed");
+
+		$query = "SELECT s.id, concat(p.first, ' ', p.last) as 'name' FROM staff as s JOIN person as p ON s.person = p.id WHERE s.active = 1 AND s.job = 1 ORDER BY p.last, p.first";
+		$result = mysqli_query($connection, $query) or die("Query failed");
+
+		while ($row = mysqli_fetch_assoc($result)) {
+			$id = $row['id'];
+			$name = $row['name'];
+
+			echo "<option value=\"";
+			echo htmlentities($id);
+			echo "\">";
+			echo htmlentities($name);
+			echo "</option>";
+		}
+		mysqli_free_result($result);
+		mysqli_close($connection);
+		?>
+		</select>
+	</td>
+	<td>
+		<select name="statkeeper">
+		<option>Select statkeeper</option>
+
+		<!-- TODO: Add option for no statkeeper -->
+		<option value="0">- No statkeeper -</option>
+		<?php
+		include ("../../setup/db_setup.php");
+
+		// Pull statkeepers from the database
+		$connection = mysqli_connect($server, $username, $password, $database) or die ("Connection failed");
+
+		$query = "SELECT s.id, concat(p.first, ' ', p.last) as 'name' FROM staff as s JOIN person as p ON s.person = p.id WHERE s.active = 1 AND s.job = 2 ORDER BY p.last, p.first";
+		$result = mysqli_query($connection, $query) or die("Query failed");
+
+		while ($row = mysqli_fetch_assoc($result)) {
+			$id = $row['id'];
+			$name = $row['name'];
+
+			echo "<option value=\"";
+			echo htmlentities($id);
+			echo "\">";
+			echo htmlentities($name);
+			echo "</option>";
+		}
+		mysqli_free_result($result);
+		mysqli_close($connection);
+		?>
+		
+		</select>
+	</td>
+	<td><input type="text" name="startTime"></td>
+</tr>
+<tr>
 	<td><strong><?php echo "$home"; ?> Score:</strong></td>
 	<td><input type="text" name="homescore" maxlength="2" size="2"></td>
 	<td><strong><?php echo "$away"; ?> Score:</strong></td>
 	<td><input type="text" name="awayscore" maxlength="2" size="2"></td>
 </tr>
 <tr>
-	<td colspan="2"><input type="checkbox" name="shootout" value="homeSOL"> <?php echo "$home"; ?> Lost in Shootout</td>
-	<td colspan="2"><input type="checkbox" name="shootout" value="awaySOL"> <?php echo "$away"; ?> Lost in Shootout</td>
+<fieldset>
+	<td colspan="2"><input type="checkbox" name="situation[]" value="homeSOL"> <?php echo "$home"; ?> Lost in Shootout</td>
+	<td colspan="2"><input type="checkbox" name="situation[]" value="awaySOL"> <?php echo "$away"; ?> Lost in Shootout</td>
 </tr>
 <tr>
-	<td colspan="2"><input type="checkbox" name="forfeit" value="homeforfeit"> <?php echo "$home"; ?> Forfeited Game</td>
-	<td colspan="2"><input type="checkbox" name="forfeit" value="awayforfeit"> <?php echo "$away"; ?> Forfeited Game</td>
+	<td colspan="2"><input type="checkbox" name="situation[]" value="homeforfeit"> <?php echo "$home"; ?> Forfeited Game</td>
+	<td colspan="2"><input type="checkbox" name="situation[]" value="awayforfeit"> <?php echo "$away"; ?> Forfeited Game</td>
+</fieldset>
 </tr>
 <tr colspan=4>
 	<td>Game Notes:</td>
@@ -132,6 +209,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 	<td colspan="2"><input type="checkbox" name="fullGame" value="homeGoalie" checked="true"> <em>GoalieName</em> played full game?</td>
 </tr>
 </table>
+<input type="submit" value="Submit" />
 
 </body>
 </html>

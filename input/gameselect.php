@@ -7,7 +7,6 @@
 
 <h2>Edit Games</h2>
 
-
 <table id="select_game">
 <thead>
 <tr>
